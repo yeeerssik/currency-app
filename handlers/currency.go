@@ -2,12 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
-	mux2 "github.com/gorilla/mux"
 	"kdf_tech_job/api"
 	"kdf_tech_job/database"
 	"log"
 	"net/http"
 	"time"
+
+	mux2 "github.com/gorilla/mux"
 )
 
 type BaseResponse struct {
@@ -26,6 +27,14 @@ type GetCurrencyResponse struct {
 	BaseResponse
 	Currency []*CurrencyData `json:"data"`
 }
+
+// swagger:operation GET /currency/save/{date}/{code} Currency
+// Save Currency
+//
+// ---
+// responses:
+//
+//	200: CommonSuccess
 
 func SaveCurrenciesHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux2.Vars(r)

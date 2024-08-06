@@ -5,12 +5,23 @@ import (
 	"time"
 )
 
+// swagger:model Currency
 type Currency struct {
-	ID    *int       `gorm:"Column:id" sql:"type:int;not null"`
-	Title *string    `gorm:"Column:title" sql:"type:varchar(60);not null"`
-	Code  *string    `gorm:"Column:code" sql:"type:varchar(3);not null"`
-	Value *float64   `gorm:"Column:value" sql:"type:numeric;not null"`
-	Date  *time.Time `gorm:"Column:a_date" sql:"type:date;not null"`
+	// ID of currency
+	// in: int64
+	ID *int `gorm:"Column:id" sql:"type:int;not null"`
+	// Title of currency
+	// in: string
+	Title *string `gorm:"Column:title" sql:"type:varchar(60);not null"`
+	// Code of currency
+	// in: string
+	Code *string `gorm:"Column:code" sql:"type:varchar(3);not null"`
+	// Value of currency
+	// in: string
+	Value *float64 `gorm:"Column:value" sql:"type:numeric;not null"`
+	// Date of currency
+	// in: date
+	Date *time.Time `gorm:"Column:a_date" sql:"type:date;not null"`
 }
 
 func (Currency) TableName() string {
