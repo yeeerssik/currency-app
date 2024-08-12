@@ -93,3 +93,49 @@ func SaveCurrenciesHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 }
+
+func GetCurrenciesHandler(w http.ResponseWriter, r *http.Request) {
+	var currency []*database.Currency
+	vars := mux2.Vars(r)
+	dateStr, dateOk := vars["date"]
+	codeStr, codeOk := vars["code"]
+
+	if !dateOk {
+		json.NewEncoder(w).Encode(BaseResponse{false, "date is required"})
+	} else {
+		// Парсим дату
+		date, err := time.Parse("2006-01-02", dateStr)
+		if err != nil {
+			json.NewEncoder(w).Encode(BaseResponse{false, "invalid date format"})
+			return
+		}
+
+		if !codeOk {
+			currency, err = database.GetCurrenciesByDate(date)
+			if err != nil {
+				json.NewEncoder(w).Encode(BaseResponse{false, "can't retrieve currency by date"})
+			}
+		} else {
+			currency, err = database.GetCurrenciesByDateAndCode(date, codeStr)
+			if err != nil {
+				json.NewEncoder(w).Encode(BaseResponse{false, "can't retrieve currency by code and date"})
+			}
+		}
+		var currencies []*CurrencyData
+
+		for _, currencyData := range currency {
+			currencies = append(currencies, &CurrencyData{
+				Title: currencyData.Title,
+				Code:  currencyData.Code,
+				Value: currencyData.Value,
+				Date:  currencyData.Date,
+			})
+		}
+		json.NewEncoder(w).Encode(GetCurrencyResponse{
+			BaseResponse{true, "fetched currencies"},
+			currencies,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+}

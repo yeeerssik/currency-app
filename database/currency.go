@@ -46,3 +46,10 @@ func GetCurrenciesByDateAndCode(date time.Time, code string) (currencies []*Curr
 	}
 	return currencies, nil
 }
+
+func GetCurrenciesByDate(date time.Time) (currencies []*Currency, err error) {
+	if find := db.Where("a_date = ?", date).Find(&currencies).Error; find != nil {
+		return nil, find
+	}
+	return currencies, nil
+}

@@ -52,7 +52,8 @@ func main() {
 	// Обработчики
 	r.HandleFunc("/healthcheck", healthCheckHandler).Methods("GET")
 	r.HandleFunc("/currency/save/{date}", handlers.SaveCurrenciesHandler).Methods("GET")
-	r.HandleFunc("/currency/{date}/{code}", handlers.SaveCurrenciesHandler).Methods("GET")
+	r.HandleFunc("/currency/{date}/{code}", handlers.GetCurrenciesHandler).Methods("GET")
+	r.HandleFunc("/currency/{date}", handlers.GetCurrenciesHandler).Methods("GET")
 
 	// swagger
 	r.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
